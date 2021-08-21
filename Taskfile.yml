@@ -1,0 +1,14 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  access-airflow-webserver:
+    desc: Make Webserver available to localhost.
+    cmds:
+    - kubectl port-forward svc/airflow-webserver 8080:8080 --namespace airflow
+
+  access-flower-dashboard:
+    desc: Make Flower dashboard available to localhost.
+    cmds:
+    - kubectl port-forward svc/airflow-flower 5555:5555 --namespace airflow

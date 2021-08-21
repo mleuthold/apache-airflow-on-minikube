@@ -41,3 +41,16 @@ kubectl config set-context --current --namespace=airflow
 helm upgrade --install airflow apache-airflow/airflow \
   -f values.yaml
 ```
+
+# Development
+Git hooks format all files automatically. They are installed with `pre-commit`.
+
+Install `pre-commit` with:
+```shell
+brew install pre-commit
+```
+
+Install git hooks with:
+```shell
+pre-commit install
+```
