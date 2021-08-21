@@ -12,3 +12,32 @@ tasks:
     desc: Make Flower dashboard available to localhost.
     cmds:
     - kubectl port-forward svc/airflow-flower 5555:5555 --namespace airflow
+
+  update-airflow-with-pvc:
+    desc: Use Apache Airflow with PVC for storing DAGs.
+    cmds:
+    - >
+      helm upgrade --install airflow apache-airflow/airflow --namespace airflow
+      --set dags.persistence.enabled=true
+      --set dags.persistence.existingClaim=s3-sync-pv-claim
+      --set dags.gitSync.enabled=false
+
+  create-pvc:
+    desc: Create PV and PVC on Kubernetes.
+    cmds:
+    - kubectl apply -f pvc.yml --namespace airflow
+
+  create-s3-syncer-pod:
+    desc: '...'
+    cmds:
+    - kubectl --namespace airflow apply -f pod-with-pvc.yml
+
+  enter-s3-syncer-pod:
+    desc: Opens shell to POD.
+    cmds:
+    - kubectl --namespace airflow exec --stdin --tty s3-sync-pod -- /bin/bash
+
+  delete-s3-syncer-pod:
+    desc: '...'
+    cmds:
+    - kubectl --namespace airflow delete -f pod-with-pvc.yml
