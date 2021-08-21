@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: s3-sync-pod
+spec:
+  containers:
+  - name: s3-syncer
+    image: nginx
+    command: [/bin/bash]
+    args: [-c, apt update; apt install -y vim; apt install -y awscli; aws s3 ls lkasjdhfkasdhfksafhskfhaskflhsdkflahdsf/dags/ --no-sign-request; aws s3 sync s3://lkasjdhfkasdhfksafhskfhaskflhsdkflahdsf/dags/ /var/www/html --no-sign-request; echo "sync finished"; sleep infinity]
+    volumeMounts:
+    - mountPath: /var/www/html
+      name: s3-sync-volume
+  volumes:
+  - name: s3-sync-volume
+    persistentVolumeClaim:
+      claimName: s3-sync-pv-claim
